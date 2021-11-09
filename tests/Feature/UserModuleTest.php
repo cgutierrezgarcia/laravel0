@@ -95,7 +95,7 @@ class UserModuleTest extends TestCase
         $skillB = factory(Skill::class)->create();
         $skillC = factory(Skill::class)->create();
 
-        $this->post('usuarios', $this->getValidatidData([
+        $this->post('usuarios', $this->getValidData([
             'skills' => [$skillA->id, $skillB->id],
         ]))->assertRedirect('usuarios');
 
@@ -103,6 +103,7 @@ class UserModuleTest extends TestCase
             'name' => 'Pepe',
             'email' => 'pepe@mail.es',
             'password' => '123456',
+            'role' => 'user',
         ]);
 
         $user = User::findByEmail('pepe@mail.es');
@@ -133,9 +134,7 @@ class UserModuleTest extends TestCase
     /** @test */
     public function the_twitter_field_is_optional()
     {
-        // $this->withoutExceptionHandling();
-
-        $this->post('usuarios', $this->getValidatidData([
+        $this->post('usuarios', $this->getValidData([
             'twitter' => null
         ]))->assertRedirect('usuarios');
 
@@ -155,10 +154,8 @@ class UserModuleTest extends TestCase
     /** @test */
     public function the_name_is_required()
     {
-        // $this->withoutExceptionHandling();
-
         $this->from('usuarios/crear')
-            ->post('usuarios', $this->getValidatidData([
+            ->post('usuarios', $this->getValidData([
                 'name' => ''
             ]))->assertRedirect('usuarios/crear')
             ->assertSessionHasErrors(['name' => 'El campo nombre es obligatorio']);
@@ -174,10 +171,8 @@ class UserModuleTest extends TestCase
     /** @test */
     public function the_email_is_required()
     {
-        // $this->withoutExceptionHandling();
-
         $this->from('usuarios/crear')
-            ->post('usuarios', $this->getValidatidData([
+            ->post('usuarios', $this->getValidData([
                 'email' => ''
             ]))->assertRedirect('usuarios/crear')
             ->assertSessionHasErrors(['email' => 'El campo email es obligatorio']);
@@ -206,14 +201,12 @@ class UserModuleTest extends TestCase
     /** @test */
     public function the_email_must_be_unique()
     {
-        // $this->withoutExceptionHandling();
-
         factory(User::class)->create([
             'email' => 'pepe@mail.es',
         ]);
 
         $this->from('usuarios/crear')
-            ->post('usuarios', $this->getValidatidData([
+            ->post('usuarios', $this->getValidData([
                 'email' => 'pepe@mail.es'
             ]))->assertRedirect('usuarios/crear')
             ->assertSessionHasErrors('email');
@@ -224,10 +217,8 @@ class UserModuleTest extends TestCase
     /** @test */
     public function the_password_is_required()
     {
-        // $this->withoutExceptionHandling();
-
         $this->from('usuarios/crear')
-            ->post('usuarios', $this->getValidatidData([
+            ->post('usuarios', $this->getValidData([
                 'password' => ''
             ]))->assertRedirect('usuarios/crear')
             ->assertSessionHasErrors(['password' => 'El campo contraseña es obligatorio']);
@@ -254,7 +245,7 @@ class UserModuleTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $this->put('usuarios/' . $user->id, $this->getValidatidData())
+        $this->put('usuarios/' . $user->id, $this->getValidData())
             ->assertRedirect('usuarios/' . $user->id);
 
         $this->assertCredentials([
@@ -267,12 +258,10 @@ class UserModuleTest extends TestCase
     /** @test */
     public function the_name_is_required_when_updating_a_user()
     {
-        // $this->withoutExceptionHandling();
-
         $user = factory(User::class)->create();
 
         $this->from('usuarios/' . $user->id . '/editar')
-            ->put('usuarios/' . $user->id, $this->getValidatidData([
+            ->put('usuarios/' . $user->id, $this->getValidData([
                 'name' => ''
             ]))->assertRedirect('usuarios/' . $user->id . '/editar')
             ->assertSessionHasErrors(['name']);
@@ -286,7 +275,7 @@ class UserModuleTest extends TestCase
         $user = factory(User::class)->create();
 
         $this->from('usuarios/' . $user->id . '/editar')
-            ->put('usuarios/' . $user->id, $this->getValidatidData([
+            ->put('usuarios/' . $user->id, $this->getValidData([
                 'email' => ''
             ]))->assertRedirect('usuarios/' . $user->id . '/editar');
 
@@ -299,7 +288,7 @@ class UserModuleTest extends TestCase
         $user = factory(User::class)->create();
 
         $this->from('usuarios/' . $user->id . '/editar')
-            ->put('usuarios/' . $user->id, $this->getValidatidData([
+            ->put('usuarios/' . $user->id, $this->getValidData([
                 'email' => 'correo-no-valido'
             ]))->assertRedirect('usuarios/' . $user->id . '/editar')
             ->assertSessionHasErrors('email');
@@ -321,7 +310,7 @@ class UserModuleTest extends TestCase
         ]);
 
         $this->from('usuarios/' . $user->id . '/editar')
-            ->put('usuarios/' . $user->id, $this->getValidatidData([
+            ->put('usuarios/' . $user->id, $this->getValidData([
                 'email' => 'existing_email@mail.es'
             ]))->assertRedirect('usuarios/' . $user->id . '/editar')
             ->assertSessionHasErrors('email');
@@ -341,7 +330,7 @@ class UserModuleTest extends TestCase
         ]);
 
         $this->from('usuarios/' . $user->id . '/editar')
-            ->put('usuarios/' . $user->id, $this->getValidatidData([
+            ->put('usuarios/' . $user->id, $this->getValidData([
                 'password' => ''
             ]))->assertRedirect('usuarios/' . $user->id);
 
@@ -360,7 +349,7 @@ class UserModuleTest extends TestCase
         ]);
 
         $this->from('usuarios/' . $user->id . '/editar')
-            ->put('usuarios/' . $user->id, $this->getValidatidData())
+            ->put('usuarios/' . $user->id, $this->getValidData())
             ->assertRedirect('usuarios/' . $user->id);
 
         $this->assertDatabaseHas('users', [
@@ -392,7 +381,7 @@ class UserModuleTest extends TestCase
     {
         // $this->withoutExceptionHandling();
 
-        $this->post('usuarios', $this->getValidatidData([
+        $this->post('usuarios', $this->getValidData([
             'profession_id' => null
         ]))->assertRedirect('usuarios');
 
@@ -414,7 +403,7 @@ class UserModuleTest extends TestCase
     public function the_profession_must_be_valid()
     {
         $this->from('usuarios/crear')
-            ->post('usuarios', $this->getValidatidData([
+            ->post('usuarios', $this->getValidData([
                 'profession_id' => '999'
             ]))->assertRedirect('usuarios/crear')
             ->assertSessionHasErrors(['profession_id']);
@@ -426,7 +415,7 @@ class UserModuleTest extends TestCase
     public function the_skills_must_be_an_array()
     {
         $this->from('usuarios/crear')
-            ->post('usuarios', $this->getValidatidData([
+            ->post('usuarios', $this->getValidData([
                 'skills' => 'PHP, JS'
             ]))->assertRedirect('usuarios/crear')
             ->assertSessionHasErrors(['skills']);
@@ -441,7 +430,7 @@ class UserModuleTest extends TestCase
         $skillB = factory(Skill::class)->create();
 
         $this->from('usuarios/crear')
-            ->post('usuarios', $this->getValidatidData([
+            ->post('usuarios', $this->getValidData([
                 'skills' => [$skillA->id, $skillB->id +1]
             ]))->assertRedirect('usuarios/crear')
             ->assertSessionHasErrors(['skills']);
@@ -457,7 +446,7 @@ class UserModuleTest extends TestCase
         ]);
 
         $this->from('usuarios/crear')
-            ->post('usuarios', $this->getValidatidData([
+            ->post('usuarios', $this->getValidData([
                 'profession_id' => $deletedProfession->id
             ]))->assertRedirect('usuarios/crear')
             ->assertSessionHasErrors(['profession_id']);
@@ -465,7 +454,7 @@ class UserModuleTest extends TestCase
         $this->assertDatabaseEmpty('users');
     }
 
-    public function getValidatidData(array $custom = [])
+    public function getValidData(array $custom = [])
     {
         $this->profession = factory(Profession::class)->create();
 
@@ -475,7 +464,8 @@ class UserModuleTest extends TestCase
             'password' => '123456',
             'profession_id' => $this->profession->id,
             'bio' => 'Programador de Laravel y Vue.js',
-            'twitter' => 'https://twitter.com/pepe'
+            'twitter' => 'https://twitter.com/pepe',
+            'role' => 'user',
         ], $custom);
     }
 }
