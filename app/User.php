@@ -48,6 +48,11 @@ class User extends Authenticatable
         return static::where('email', $email)->first();
     }
 
+    public function skills()
+    {
+        return $this->belongsToMany(Skill::class);
+    }
+
     public static function createUser($data)
     {
         DB::transaction(function () use ($data) {
@@ -62,6 +67,8 @@ class User extends Authenticatable
                 'twitter' => $data['twitter'],
                 'profession_id' => $data['profession_id'],
             ]);
+
+            $user->skills()->attach($data['skills'] ?? []);
         });
     }
 }
