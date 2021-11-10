@@ -371,16 +371,11 @@ class UserModuleTest extends TestCase
         $this->assertDatabaseMissing('users', [
             'id' => $user->id
         ]);
-
-        // Otra opción:
-        // $this->assertSame(0, User::count());
     }
 
     /** @test */
     public function the_profession_id_field_is_optional()
     {
-        // $this->withoutExceptionHandling();
-
         $this->post('usuarios', $this->getValidData([
             'profession_id' => null
         ]))->assertRedirect('usuarios');
@@ -389,7 +384,6 @@ class UserModuleTest extends TestCase
             'name' => 'Pepe',
             'email' => 'pepe@mail.es',
             'password' => '123456',
-            // 'profession_id' => null
         ]);
 
         $this->assertDatabaseHas('user_profiles', [
@@ -434,6 +428,29 @@ class UserModuleTest extends TestCase
                 'skills' => [$skillA->id, $skillB->id +1]
             ]))->assertRedirect('usuarios/crear')
             ->assertSessionHasErrors(['skills']);
+
+        $this->assertDatabaseEmpty('users');
+    }
+
+    /** @test */
+    public function the_role_field_is_optional()
+    {
+        $this->post('usuarios', $this->getValidData([
+            'role' => null
+        ]))->assertRedirect('usuarios');
+
+        $this->assertDatabaseHas('users', [
+            'email' => 'pepe@mail.es',
+            'role' => 'user',
+        ]);
+    }
+
+    /** @test */
+    public function the_role_field_must_be_valid()
+    {
+        $this->post('usuarios', $this->getValidData([
+            'role' => 'invalid-role'
+        ]))->assertSessionHasErrors('role');
 
         $this->assertDatabaseEmpty('users');
     }
