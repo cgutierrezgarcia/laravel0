@@ -18,8 +18,25 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function update()
+    public function update(Request $request)
     {
+        $user = User::first(); // $user = auth->user();
 
+        // $data = $request->all();
+
+        // unset($data['password']);
+
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
+
+        $user->profile->update([
+            'bio' => $request->bio,
+            'twitter' => $request->twitter,
+            'profession_id' => $request->profession_id,
+        ]);
+
+        return back();
     }
 }
