@@ -9,7 +9,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ListProfessionsTest extends TestCase
 {
+    use RefreshDatabase;
 
+    /** @test */
     public function it_shows_the_professions_list()
     {
         factory(Profession::class)->create(['title' => 'Diseñador']);
