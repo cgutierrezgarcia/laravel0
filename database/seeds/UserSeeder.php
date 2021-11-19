@@ -64,7 +64,7 @@ class UserSeeder extends Seeder
 //            'profession_id' => Profession::whereTitle('Desarrollador Back-End')->value('id'),
 //        ]);
 
-        factory(User::class, 49)->create()->each(function ($user) {
+        factory(User::class, 999)->create()->each(function ($user) {
             $user->profile()->create(
                 factory(App\UserProfile::class)->raw()
             );

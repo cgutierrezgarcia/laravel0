@@ -29,8 +29,16 @@ class UserController extends Controller
 //        }
 
         // $users = DB::table('users')->get();
-        $users = User::all(); // get() (?)
-        $title = 'Usuarios';$professions = Profession::orderBy('title', 'ASD')->get();
+        // $users = User::all(); // get() (?)
+        $users = User::orderBy('created_at', 'DESC')->paginate();
+
+        $title = 'Usuarios';
+
+//        $professions = Profession::orderBy('title', 'ASD')->get();
+//        $professions = Profession::orderBy('title', 'ASD')->get();
+
+        $title = 'Usuarios';
+
 
         // return view('users.create', compact('professions'));
         return view('users.index', compact('users', 'title'));
@@ -38,6 +46,17 @@ class UserController extends Controller
 //        return view('users.index')
 //            ->with('users', User::all())
 //            ->with('title', 'Listado de usuarios');
+    }
+
+
+
+    public function trashed()
+    {
+        $users = User::onlyTrashed()->paginate();
+
+        $title = 'Listado de usuarios en la papelera';
+
+        return view('users.index', compact('users', 'title'));
     }
 
 
@@ -86,11 +105,25 @@ class UserController extends Controller
 
 
 
-    public function destroy(User $user)
+    public function trash(User $user)
     {
+        $user->profile()->delete();
         $user->delete();
 
         return redirect()->route('users.index');
+    }
+
+
+
+    public function destroy($id)
+    {
+        $user = User::onlyTrashed()->where('id', $id)->firstOrFail();
+
+        // abort_unless($user->trashed(), 404);
+
+        $user->forceDelete();
+
+        return redirect()->route('users.trashed');
     }
 
 

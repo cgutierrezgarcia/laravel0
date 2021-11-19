@@ -2,22 +2,20 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-//    protected $fillable = [
-//        'name', 'email', 'password'
-//    ];
     protected $guarded = [];
 
     /**
@@ -39,6 +37,11 @@ class User extends Authenticatable
         return $this->hasOne(UserProfile::class)->withDefault();
     }
 
+    public function skills()
+    {
+        return $this->belongsToMany(Skill::class);
+    }
+
     public function isAdmin()
     {
         return $this->role === 'admin';
@@ -47,10 +50,5 @@ class User extends Authenticatable
     public static function findByEmail($email)
     {
         return static::where('email', $email)->first();
-    }
-
-    public function skills()
-    {
-        return $this->belongsToMany(Skill::class);
     }
 }
