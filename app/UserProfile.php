@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UserProfile extends Model
 {
-    // protected $fillable = ['bio', 'twitter', 'profession_id', 'user_id'];
-
     use SoftDeletes;
 
     protected $guarded = [];

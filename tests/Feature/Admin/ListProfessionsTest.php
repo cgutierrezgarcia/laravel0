@@ -15,7 +15,7 @@ class ListProfessionsTest extends TestCase
     public function it_shows_the_professions_list()
     {
         factory(Profession::class)->create(['title' => 'Diseñador']);
-        factory(Profession::class)->create(['title' => 'Programmador']);
+        factory(Profession::class)->create(['title' => 'Programador']);
         factory(Profession::class)->create(['title' => 'Administrador']);
 
         $this->get('profesiones')
@@ -23,7 +23,7 @@ class ListProfessionsTest extends TestCase
             ->assertSeeInOrder([
                 'Administrador',
                 'Diseñador',
-                'Programmador',
+                'Programador',
             ]);
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Admin;
 
-use App\Profession;
 use App\User;
 use App\UserProfile;
 use Tests\TestCase;
@@ -22,8 +21,7 @@ class DeleteUsersTest extends TestCase
         $this->patch('usuarios/' . $user->id . '/papelera')
             ->assertRedirect('usuarios');
 
-        // Comprobando SoftDelete
-        // Opción 1
+        //opción 1
         $this->assertSoftDeleted('users', [
             'id' => $user->id,
         ]);
@@ -31,7 +29,7 @@ class DeleteUsersTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        // Opción 2
+        //opción 2
         $user->refresh();
         $this->assertTrue($user->trashed());
     }

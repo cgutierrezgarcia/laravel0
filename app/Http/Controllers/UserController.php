@@ -15,40 +15,12 @@ class UserController extends Controller
 {
     public function index()
     {
-//        if (request()->has('empty')) {
-//            $users = [];
-//        } else {
-//            $users = [
-//                'Joel',
-//                'Ellie',
-//                'Tess',
-//                'Tommy',
-//                'Bill',
-//                // '<script>alert("Click aquí")</script>'
-//            ];
-//        }
-
-        // $users = DB::table('users')->get();
-        // $users = User::all(); // get() (?)
         $users = User::orderBy('created_at', 'DESC')->paginate();
 
         $title = 'Usuarios';
 
-//        $professions = Profession::orderBy('title', 'ASD')->get();
-//        $professions = Profession::orderBy('title', 'ASD')->get();
-
-        $title = 'Usuarios';
-
-
-        // return view('users.create', compact('professions'));
-        return view('users.index', compact('users', 'title'));
-
-//        return view('users.index')
-//            ->with('users', User::all())
-//            ->with('title', 'Listado de usuarios');
+        return view('users.index')->with(compact('users', 'title'));
     }
-
-
 
     public function trashed()
     {
@@ -59,24 +31,17 @@ class UserController extends Controller
         return view('users.index', compact('users', 'title'));
     }
 
-
-
     public function create()
     {
         return $this->form('users.create', new User);
     }
 
-
-
     public function store(CreateUserRequest $request)
     {
         $request->createUser();
-        // User::createUser($request->validated());
 
         return redirect()->route('users.index');
     }
-
-
 
     public function show(User $user)
     {
@@ -87,14 +52,10 @@ class UserController extends Controller
         return view('users.show', compact('user'));
     }
 
-
-
     public function edit(User $user)
     {
         return $this->form('users.edit', $user);
     }
-
-
 
     public function update(UpdateUserRequest $request, User $user)
     {
@@ -102,8 +63,6 @@ class UserController extends Controller
 
         return redirect()->route('users.show', $user);
     }
-
-
 
     public function trash(User $user)
     {
@@ -113,20 +72,14 @@ class UserController extends Controller
         return redirect()->route('users.index');
     }
 
-
-
     public function destroy($id)
     {
         $user = User::onlyTrashed()->where('id', $id)->firstOrFail();
-
-        // abort_unless($user->trashed(), 404);
 
         $user->forceDelete();
 
         return redirect()->route('users.trashed');
     }
-
-
 
     protected function form($view, User $user)
     {
@@ -134,7 +87,7 @@ class UserController extends Controller
             'user' => $user,
             'professions' => Profession::orderBy('title', 'ASC')->get(),
             'skills' => Skill::orderBy('name', 'ASC')->get(),
-            'roles' => trans('users.roles'),
+            'roles' => trans('users.roles')
         ]);
     }
 }

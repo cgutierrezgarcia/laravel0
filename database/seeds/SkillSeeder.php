@@ -1,6 +1,5 @@
 <?php
 
-use App\Skill;
 use Illuminate\Database\Seeder;
 
 class SkillSeeder extends Seeder
@@ -12,12 +11,12 @@ class SkillSeeder extends Seeder
      */
     public function run()
     {
-        Factory(Skill::class)->create(['name' => 'HTML']);
-        Factory(Skill::class)->create(['name' => 'CSS']);
-        Factory(Skill::class)->create(['name' => 'JS']);
-        Factory(Skill::class)->create(['name' => 'PHP']);
-        Factory(Skill::class)->create(['name' => 'SQL']);
-        Factory(Skill::class)->create(['name' => 'POO']);
-        Factory(Skill::class)->create(['name' => 'TDD']);
+        factory(\App\Skill::class)->create(['name' => 'HTML']);
+        factory(\App\Skill::class)->create(['name' => 'CSS']);
+        factory(\App\Skill::class)->create(['name' => 'JS']);
+        factory(\App\Skill::class)->create(['name' => 'PHP']);
+        factory(\App\Skill::class)->create(['name' => 'SQL']);
+        factory(\App\Skill::class)->create(['name' => 'POO']);
+        factory(\App\Skill::class)->create(['name' => 'TDD']);
     }
 }

@@ -18,14 +18,11 @@ class DeleteProfessionsTest extends TestCase
     {
         $profession = factory(Profession::class)->create();
 
-        $response = $this->delete("profesiones/{$profession->id}");
+        $response = $this->delete('profesiones/' . $profession->id);
 
         $response->assertRedirect();
 
-        $this->assertDatabaseMissing('professions', [
-            'id' => $profession->id,
-        ]);
-        // $this->assertDatabaseEmpty('professions');
+        $this->assertDatabaseEmpty('professions');
     }
 
     /** @test */
@@ -35,12 +32,11 @@ class DeleteProfessionsTest extends TestCase
 
         $user = factory(User::class)->create();
         $profession = factory(Profession::class)->create();
-
         $user->profile()->save(factory(UserProfile::class)->make([
             'profession_id' => $profession->id,
         ]));
 
-        $response = $this->delete("profesiones/{$profession->id}");
+        $response = $this->delete('profesiones/' . $profession->id);
         $response->assertStatus(400);
 
         $this->assertDatabaseHas('professions', [

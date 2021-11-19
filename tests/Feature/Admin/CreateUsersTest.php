@@ -24,10 +24,9 @@ class CreateUsersTest extends TestCase
     ];
 
     /** @test */
-    public function it_loads_the_new_user_page()
+    public function it_loads_the_new_users_page()
     {
         $profession = factory(Profession::class)->create();
-
         $skillA = factory(Skill::class)->create();
         $skillB = factory(Skill::class)->create();
 
@@ -88,7 +87,7 @@ class CreateUsersTest extends TestCase
     }
 
     /** @test */
-    public function the_user_is_redirected_to_the_previous_page_when_the_validation_fails()
+    public function the_user_is_redirected_to_the_previous_page_when_the_validations_fails()
     {
         $this->handleValidationExceptions();
 
@@ -109,7 +108,7 @@ class CreateUsersTest extends TestCase
         $this->assertCredentials([
             'name' => 'Pepe',
             'email' => 'pepe@mail.es',
-            'password' => '123456',
+            'password' => '123456'
         ]);
 
         $this->assertDatabaseHas('user_profiles', [
@@ -150,7 +149,7 @@ class CreateUsersTest extends TestCase
             ->post('usuarios', [
                 'name' => 'Pepe',
                 'email' => 'correo-no-valido',
-                'password' => '123456',
+                'password' => '123456'
             ])->assertSessionHasErrors('email');
     }
 
@@ -165,7 +164,7 @@ class CreateUsersTest extends TestCase
 
         $this->from('usuarios/crear')
             ->post('usuarios', $this->withData([
-                'email' => 'pepe@mail.es'
+                'email' => 'pepe@mail.es',
             ]))->assertSessionHasErrors('email');
     }
 
@@ -232,7 +231,7 @@ class CreateUsersTest extends TestCase
 
         $this->from('usuarios/crear')
             ->post('usuarios', $this->withData([
-                'skills' => [$skillA->id, $skillB->id +1]
+                'skills' => [$skillA->id, $skillB->id + 1]
             ]))->assertSessionHasErrors(['skills']);
     }
 
@@ -257,17 +256,15 @@ class CreateUsersTest extends TestCase
         $this->post('usuarios', $this->withData([
             'role' => 'invalid-role'
         ]))->assertSessionHasErrors('role');
-
-        $this->assertDatabaseEmpty('users');
     }
 
     /** @test */
-    public function only_not_deleted_can_be_selected()
+    public function only_not_deleted_professions_can_be_selected()
     {
         $this->handleValidationExceptions();
 
         $deletedProfession = factory(Profession::class)->create([
-            'deleted_at' => now()->format('Y-m-d')
+            'deleted_at' => now()->format('Y-m-d'),
         ]);
 
         $this->from('usuarios/crear')
@@ -275,4 +272,5 @@ class CreateUsersTest extends TestCase
                 'profession_id' => $deletedProfession->id
             ]))->assertSessionHasErrors(['profession_id']);
     }
+
 }

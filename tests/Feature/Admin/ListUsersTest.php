@@ -12,13 +12,13 @@ class ListUsersTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function it_shows_the_users_list_page()
+    public function it_shows_the_users_list()
     {
         factory(User::class)->create([
             'name' => 'Joel',
         ]);
         factory(User::class)->create([
-            'name' => 'Ellie',
+            'name' => 'Ellie'
         ]);
 
         $this->get('usuarios')
@@ -34,7 +34,7 @@ class ListUsersTest extends TestCase
         $this->get('usuarios')
             ->assertStatus(200)
             ->assertSee('Usuarios')
-            ->assertSee('No hay usuarios registrados.');
+            ->assertSee('No hay usuarios registrados');
     }
 
     /** @test */
@@ -63,37 +63,33 @@ class ListUsersTest extends TestCase
             'name' => 'Tercer usuario',
             'created_at' => now()->subDays(5),
         ]);
-
         factory(User::class)->times(12)->create([
             'created_at' => now()->subDays(4),
         ]);
-
         factory(User::class)->create([
-            'name' => 'Decimoseptimo usuario',
+            'name' => 'Decimoséptimo usuario',
             'created_at' => now()->subDays(2),
         ]);
-
         factory(User::class)->create([
             'name' => 'Segundo usuario',
             'created_at' => now()->subDays(6),
         ]);
-
         factory(User::class)->create([
             'name' => 'Primer usuario',
             'created_at' => now()->subWeek(),
         ]);
-
         factory(User::class)->create([
             'name' => 'Decimosexto usuario',
             'created_at' => now()->subDays(3),
         ]);
 
+
         $this->get('usuarios')
             ->assertStatus(200)
             ->assertSeeInOrder([
-                'Decimoseptimo usuario',
+                'Decimoséptimo usuario',
                 'Decimosexto usuario',
-                'Tercer usuario',
+                'Tercer usuario'
             ])
             ->assertDontSee('Primer usuario')
             ->assertDontSee('Segundo usuario');
@@ -101,7 +97,7 @@ class ListUsersTest extends TestCase
         $this->get('usuarios?page=2')
             ->assertSeeInOrder([
                 'Segundo usuario',
-                'Primer usuario',
+                'Primer usuario'
             ])->assertDontSee('Tercer usuario');
     }
 }

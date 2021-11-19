@@ -24,6 +24,7 @@
     <meta name="msapplication-config" content="/docs/4.5/assets/img/favicons/browserconfig.xml">
     <meta name="theme-color" content="#563d7c">
 
+
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -47,7 +48,7 @@
 <header>
     <!-- Fixed navbar -->
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="#">Curso de laravel desde 0</a>
+        <a class="navbar-brand" href="#">Curso de Laravel desde 0</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -73,7 +74,6 @@
 
 <!-- Begin page content -->
 <main role="main" class="flex-shrink-0">
-
     <div class="row pt-5 mt-5 ml-5">
         <div class="col-8">
             @yield('content')
@@ -82,7 +82,6 @@
             @yield('sidebar')
         </div>
     </div>
-
 </main>
 
 <footer class="footer mt-auto py-3">

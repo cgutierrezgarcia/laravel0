@@ -14,8 +14,6 @@ class ExampleTest extends TestCase
      */
     public function testBasicTest()
     {
-        $this->withoutExceptionHandling();
-
         $this->assertTrue(true);
     }
 }

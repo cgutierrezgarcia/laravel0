@@ -3,9 +3,7 @@
 @section('title', 'Editar usuario')
 
 @section('content')
-
     @card
-
         @slot('header', 'Editar usuario')
 
         @include('shared._errors')
@@ -20,7 +18,5 @@
                 <a href="{{ route('users.index') }}" class="btn btn-link">Regresar al listado de usuarios</a>
             </div>
         </form>
-
     @endcard
-
 @endsection

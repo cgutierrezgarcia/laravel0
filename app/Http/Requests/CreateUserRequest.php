@@ -29,11 +29,11 @@ class CreateUserRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'email' => ['required', 'email', 'unique:users,email'],
+            'email' => 'required|email|unique:users,email',
             'password' => 'required',
             'role' => [
                 'nullable',
-                Rule::in(Role::getList()),
+                Rule::in(Role::getList())
             ],
             'bio' => 'required',
             'twitter' => 'nullable|present|url',
@@ -60,8 +60,6 @@ class CreateUserRequest extends FormRequest
 
     public function createUser()
     {
-        // $data = $this->validated();
-
         DB::transaction(function () {
             $user = User::create([
                 'name' => $this->name,
@@ -70,13 +68,10 @@ class CreateUserRequest extends FormRequest
                 'role' => $this->role ?? 'user',
             ]);
 
-            // $user->role = $this->role ?? 'user';
-            // $user->save();
-
             $user->profile()->create([
                 'bio' => $this->bio,
                 'twitter' => $this->twitter,
-                'profession_id' => $this->profession_id,
+                'profession_id' => $this->profession_id
             ]);
 
             $user->skills()->attach($this->skills ?? []);

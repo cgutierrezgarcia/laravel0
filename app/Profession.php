@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Profession extends Model
 {
-    // use SoftDeletes;
+    //use SoftDeletes;
 
     protected $fillable = ['title'];
 

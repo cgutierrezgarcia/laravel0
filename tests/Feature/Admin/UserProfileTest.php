@@ -3,10 +3,8 @@
 namespace Tests\Feature\Admin;
 
 use App\Profession;
-use App\Role;
 use App\User;
 use App\UserProfile;
-use Illuminate\Validation\Rule;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -30,7 +28,7 @@ class UserProfileTest extends TestCase
 
         $newProfession = factory(Profession::class)->create();
 
-        // $this->actingAs($user);
+        //$this->actingAs($user);
 
         $response = $this->get('editar-perfil');
         $response->assertStatus(200);
@@ -42,6 +40,7 @@ class UserProfileTest extends TestCase
             'twitter' => 'https://twitter.com/pepe',
             'profession_id' => $newProfession->id,
         ]);
+
         $response->assertRedirect('editar-perfil');
 
         $this->assertDatabaseHas('users', [

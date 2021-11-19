@@ -23,7 +23,7 @@ class ListSkillsTest extends TestCase
             ->assertSeeInOrder([
                 'CSS',
                 'HTML',
-                'PHP',
+                'PHP'
             ]);
     }
 }

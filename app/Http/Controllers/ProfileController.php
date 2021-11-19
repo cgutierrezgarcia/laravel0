@@ -10,7 +10,7 @@ class ProfileController extends Controller
 {
     public function edit()
     {
-        $user = User::first(); // $user = auth->user();
+        $user = User::first();  // $user = auth()->user();
 
         return view('profile.edit', [
             'user' => $user,
@@ -20,11 +20,7 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
-        $user = User::first(); // $user = auth->user();
-
-        // $data = $request->all();
-
-        // unset($data['password']);
+        $user = User::first();  // $user = auth()->user();
 
         $user->update([
             'name' => $request->name,
@@ -34,7 +30,7 @@ class ProfileController extends Controller
         $user->profile->update([
             'bio' => $request->bio,
             'twitter' => $request->twitter,
-            'profession_id' => $request->profession_id,
+            'profession_id' => $request->profession_id
         ]);
 
         return back();
