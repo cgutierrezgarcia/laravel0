@@ -56,4 +56,18 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Team::class)->withDefault();
     }
+
+    public function scopeSearch($query, $search)
+    {
+        if (empty($search)) {
+            return;
+        }
+        $query->where(function ($query) use ($search) {
+            $query->where('name', 'LIKE', "%{$search}%")
+                ->orWhere('email', 'LIKE', "%{$search}%")
+                ->orWhereHas('team', function ($query) use ($search) {
+                    $query->where('name', 'LIKE', "%{$search}%");
+                });
+        });
+    }
 }
